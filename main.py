@@ -22,38 +22,60 @@ Created on Feb 20, 2020
 
 @author: PUT YOUR NAME HERE
 '''
-name=input("Enter Employee name: \n")
-hrs=int(input("Hours worked:\n"))
-positionCode=input("Enter position code:\n").lower()
-cashierPay,clerkPay,managerPay=12.25,18.00,35.75
-if positionCode=='cashier' or positionCode=='manager' or positionCode=='clerk':
+# Input
+name = input("Enter Employee name: \n")
+hrs = int(input("Hours worked:\n"))
+positionCode = input("Enter position code:\n").lower()
+
+# Pay rates
+cashierPay, clerkPay, managerPay = 12.25, 18.00, 35.75
+
+# Check if the position code is valid
+if positionCode in ['cashier', 'manager', 'clerk']:
     print('          Boxmart Pay Stub')
     print()
-    print('Enter name: {}'.format(name))
-    print('Pay period:    01/144/2020 to 01/20/2020\n')
-    print("Normal Hours worked: ".ljust(30),'{} hrs'.format(hrs))
-    overTime=hrs-40
-    print("Overtime Hours Worked: ".ljust(30),'{} hrs'.format(overTime))
-    if positionCode=='cashier':
-        pay=cashierPay
-    if positionCode=='clerk':
-        pay==clerkPay
-    if positionCode=='manager':
-        pay==managerPay
-    print("Hourly Wage: ".ljust(25),'$ {}/hr'.format(pay))
-    print()
-    normalPay=40*pay
-    print("Normal pay: ".ljust(25),'$ {:.2f}'.format(normalPay))
-    overTimerate=pay*1.5*overTime
-    print("Overtime Pay: ".ljust(25),'$ {}'.format(round(overTimerate,2)))
-    grossPay=normalPay*overTimerate
-    print('Gross pay: '.ljust(25),'$ {:.2f}'.format((grossPay)))
-    if grossPay>500:
-        federalTax=(grossPay-500)*10/100
-        print('Federal tax: '.ljust(25),'${:.2f}'.format((federalTax)))
-    stateTax=grossPay*3/100
-    print('State tax: '.ljust(25),'$ {:.2f}'.format((stateTax)))
-    netPay=grossPay-federalTax-stateTax
-    print('Net Pay: '.ljust(25),'${:.2f}'.format((netPay)))
-          
+    print('Employee Name: {}'.format(name))
+    print('Pay Period:    01/14/2020 to 01/20/2020\n')
+    print("Normal Hours Worked: ".ljust(30), '{} hrs'.format(min(hrs, 40)))
+    
+    # Calculate overtime hours
+    overTime = max(0, hrs - 40)
+    print("Overtime Hours Worked: ".ljust(30), '{} hrs'.format(overTime))
+    
+    # Determine hourly wage based on position
+    if positionCode == 'cashier':
+        pay = cashierPay
+    elif positionCode == 'clerk':
+        pay = clerkPay
+    elif positionCode == 'manager':
+        pay = managerPay
         
+    print("Hourly Wage: ".ljust(25), '${}/hr'.format(pay))
+    print()
+    
+    # Calculate normal and overtime pay
+    normalPay = min(hrs, 40) * pay
+    print("Normal Pay: ".ljust(25), '${:.2f}'.format(normalPay))
+    
+    overTimerate = pay * 1.5 * overTime
+    print("Overtime Pay: ".ljust(25), '${:.2f}'.format(overTimerate))
+    
+    # Calculate gross pay
+    grossPay = normalPay + overTimerate
+    print('Gross Pay: '.ljust(25), '${:.2f}'.format(grossPay))
+    
+    # Calculate taxes
+    federalTax = 0
+    if grossPay > 500:
+        federalTax = (grossPay - 500) * 0.10
+        print('Federal Tax: '.ljust(25), '${:.2f}'.format(federalTax))
+    
+    stateTax = grossPay * 0.03
+    print('State Tax: '.ljust(25), '${:.2f}'.format(stateTax))
+    
+    # Calculate net pay
+    netPay = grossPay - federalTax - stateTax
+    print('Net Pay: '.ljust(25), '${:.2f}'.format(netPay))
+else:
+    print("Invalid position code.")
+
